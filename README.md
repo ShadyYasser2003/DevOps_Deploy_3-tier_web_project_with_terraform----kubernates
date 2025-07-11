@@ -39,6 +39,8 @@ A modern microservices-based voting application deployed on **Kubernetes**, allo
 
 ## 🏗️ Application Architecture
 
+## 🏗️ Application Architecture
+
 ```mermaid
 graph TB
     subgraph "AWS Cloud - Managed by Terraform"
@@ -48,42 +50,42 @@ graph TB
             NAT[NAT Gateway]
             SG[Security Groups]
         end
-        
+
         subgraph "EKS Cluster"
             subgraph "Public Subnets"
                 ALB[Application Load Balancer]
             end
-            
+
             subgraph "Private Subnets"
                 subgraph "Frontend Pods"
                     F1[Frontend Pod 1]
                     F2[Frontend Pod 2]
                     F3[Frontend Pod 3]
                 end
-                
+
                 subgraph "Backend Pods"
                     B1[Backend Pod 1]
                     B2[Backend Pod 2]
                     B3[Backend Pod 3]
                 end
-                
+
                 subgraph "Database"
                     R[Redis StatefulSet]
                     PV[Persistent Volume]
                 end
             end
         end
-        
+
         subgraph "Storage"
             EBS[EBS Volumes]
         end
-        
+
         subgraph "IAM & Security"
             ROLES[IAM Roles]
             POLICIES[IAM Policies]
         end
     end
-    
+
     Users[Users] --> ALB
     ALB --> F1
     ALB --> F2
@@ -91,17 +93,19 @@ graph TB
     ALB --> B1
     ALB --> B2
     ALB --> B3
-    
+
     F1 --> B1
     F2 --> B2
     F3 --> B3
-    
+
     B1 --> R
     B2 --> R
     B3 --> R
-    
+
     R --> PV
     PV --> EBS
+```
+
 
 
 ## 🛠️ Tech Stack
