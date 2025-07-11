@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق التصويت - كلب أم قطة؟</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .vote-section {
+            margin: 30px 0;
+        }
+        .vote-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .vote-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .vote-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .vote-btn.cat {
+            background: linear-gradient(45deg, #4834d4, #686de0);
+        }
+        .results {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .result-bar {
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+        .result-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .dog-fill {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+        }
+        .cat-fill {
+            background: linear-gradient(90deg, #4834d4, #686de0);
+        }
+        .emoji {
+            font-size: 2em;
+            margin: 0 10px;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗳️ تطبيق التصويت</h1>
+        <p>اختر المفضل لديك: كلب أم قطة؟</p>
+        
+        <div class="vote-section">
+            <form method="POST" action="/vote">
+                <div class="vote-buttons">
+                    <button type="submit" name="animal" value="dog" class="vote-btn dog">
+                        🐕 كلب
+                    </button>
+                    <button type="submit" name="animal" value="cat" class="vote-btn cat">
+                        🐱 قطة
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="results">
+            <h2>📊 النتائج الحالية</h2>
+            
+            {% set total_votes = results.dog + results.cat %}
+            {% if total_votes > 0 %}
+                {% set dog_percentage = (results.dog / total_votes * 100) | round(1) %}
+                {% set cat_percentage = (results.cat / total_votes * 100) | round(1) %}
+            {% else %}
+                {% set dog_percentage = 0 %}
+                {% set cat_percentage = 0 %}
+            {% endif %}
+
+            <div class="result-item">
+                <div>
+                    <span class="emoji">🐕</span>
+                    <strong>كلب: {{ results.dog }} أصوات ({{ dog_percentage }}%)</strong>
+                </div>
+                <div class="result-bar">
+                    <div class="result-fill dog-fill" style="width: {{ dog_percentage }}%"></div>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <div>
+                    <span class="emoji">🐱</span>
+                    <strong>قطة: {{ results.cat }} أصوات ({{ cat_percentage }}%)</strong>
+                </div>
+                <div class="result-bar">
+                    <div class="result-fill cat-fill" style="width: {{ cat_percentage }}%"></div>
+                </div>
+            </div>
+
+            <div class="status">
+                <strong>إجمالي الأصوات: {{ total_votes }}</strong>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; font-size: 0.9em; color: #666;">
+            <p>🚀 يعمل على Kubernetes مع ALB Ingress</p>
+            <p>Backend: <code>/api</code> | Frontend: <code>/</code></p>
+        </div>
+    </div>
+
+    <script>
+        // Auto refresh every 5 seconds
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
+    </script>
+</body>
+</html>
