@@ -39,8 +39,6 @@ A modern microservices-based voting application deployed on **Kubernetes**, allo
 
 ## 🏗️ Application Architecture
 
-## 🏗️ Application Architecture
-
 ```mermaid
 graph TB
     subgraph "AWS Cloud - Managed by Terraform"
